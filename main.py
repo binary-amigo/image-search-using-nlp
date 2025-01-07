@@ -1,6 +1,5 @@
 import streamlit as st
-from search_logic import image_search
-from PIL import Image
+from search import image_search
 import os
 
 # App title
