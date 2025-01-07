@@ -1,7 +1,6 @@
 from transformers import BridgeTowerProcessor, BridgeTowerForImageAndTextRetrieval
 from PIL import Image
 import torch
-import torch.nn.functional as F
 import os
 
 # Load model and processor
@@ -9,16 +8,6 @@ processor = BridgeTowerProcessor.from_pretrained("BridgeTower/bridgetower-base-i
 model = BridgeTowerForImageAndTextRetrieval.from_pretrained("BridgeTower/bridgetower-base-itm-mlm")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
-
-# Get text embedding
-def get_text_embedding(text):
-    encoding = processor(text=text, images=None, return_tensors="pt").to(device)
-    outputs = model(**encoding)
-    return outputs.logits
-
-# Calculate similarity
-def calculate_similarity(image_embedding, text_embedding):
-    return F.cosine_similarity(image_embedding, text_embedding)
 
 # Search for the best matching image
 def image_search(query, image_dir):
